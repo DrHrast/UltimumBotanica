@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimumBotanica.Api", "UltimumBotanica.Api\UltimumBotanica.Api.csproj", "{652B87C7-9DF5-43BF-9DE1-F320F52328CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimumBotanica.Ui", "UltimumBotanica.Ui\UltimumBotanica.Ui.csproj", "{24990AD7-556E-4897-AD4A-363775D44915}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{652B87C7-9DF5-43BF-9DE1-F320F52328CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652B87C7-9DF5-43BF-9DE1-F320F52328CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652B87C7-9DF5-43BF-9DE1-F320F52328CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652B87C7-9DF5-43BF-9DE1-F320F52328CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24990AD7-556E-4897-AD4A-363775D44915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24990AD7-556E-4897-AD4A-363775D44915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24990AD7-556E-4897-AD4A-363775D44915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24990AD7-556E-4897-AD4A-363775D44915}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C109617F-2A42-4BA9-9F9F-09918D8CC80B}
+	EndGlobalSection
+EndGlobal
