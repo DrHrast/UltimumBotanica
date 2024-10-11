@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.OpenApi.Extensions;
+using System;
 using UltimumBotanica.Api.Models;
 
 namespace UltimumBotanica.Api.Services
@@ -25,6 +26,11 @@ namespace UltimumBotanica.Api.Services
         public string GetCultureGroup(int id)
         {
             return _context.Culture.FirstOrDefault(q => q.Id == id)?.Group!;
+        }
+
+        public List<string> GetAllCultureNames ()
+        {
+            return _context.Culture.Select(q => q.Name).ToList()!;
         }
     }
 }

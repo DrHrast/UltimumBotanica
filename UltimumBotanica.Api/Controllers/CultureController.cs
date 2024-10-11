@@ -36,5 +36,12 @@ namespace UltimumBotanica.Api.Controllers
         {
             return _cultureService.GetCultureGroup(id);
         }
+
+        [HttpGet]
+        [Route("GetAllCultureNames")]
+        public List<string> GetAllCultureNames()
+        {
+            return _cultureService.GetAllCultureNames();
+        }
     }
 }

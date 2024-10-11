@@ -1,7 +1,162 @@
-﻿@page "/"
+﻿@inject HttpClient Http
 
-<PageTitle>Home</PageTitle>
+@page "/"
+@using UltimumBotanica.Ui.Components;
 
-<h1>Hello, world!</h1>
+<h1 class="text-center">Ultimum Botanica</h1>
 
-Welcome to your new app.
+<div class="container mt-5">
+    <!-- Navigation Sidebar -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="accordion" id="sidebarAccordion">
+                <!-- Garden Dimensions Section -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Dimenzije vrta
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#sidebarAccordion">
+                        <div class="accordion-body">
+                            <label for="height">Visina (m):</label>
+                            <input type="number" id="height" class="form-control" />
+                            <label for="width" class="mt-2">Širina (m):</label>
+                            <input type="number" id="width" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Person Number Section -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Broj osoba
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#sidebarAccordion">
+                        <div class="accordion-body">
+                            <input type="number" value="@personCount" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Culture Selection Section -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Izbor kultura
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#sidebarAccordion">
+                        <div class="accordion-body">
+                            <label for="searchBox">Search Irrigation Type:</label>
+                            <input type="text" id="searchBox" class="form-control mb-2" @bind="searchQuery" placeholder="Type to search..." />
+                            <select class="form-select mb-2" @onchange="OnIrrigationSelected">
+                                <option value="" disabled selected>Select an irrigation type...</option>
+                                @foreach (var irrigation in FilteredCultures)
+                                {
+                                    <option value="@irrigation">@irrigation</option>
+                                }
+                            </select>
+
+                            <!-- Display Selected Items -->
+                            <div class="selected-items">
+                                <h5>Selected Irrigation Types</h5>
+                                @if (selectedCultures.Any())
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var irrigation in selectedCultures)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                @irrigation
+                                                <button class="btn btn-danger btn-sm" @onclick="() => RemoveIrrigation(irrigation)">Remove</button>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No irrigation types selected.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Manage Your Digital Garden</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Welcome to the Ultimum Botanica Digital Garden System. Here you can manage your garden's dimensions, set irrigation types, and track seasonal activities.
+                        Use the left sidebar to navigate through different sections.
+                    </p>
+
+                    <hr />
+
+                    <h4>Latest Activity</h4>
+                    <p>No recent activity. Start by setting your garden's dimensions.</p>
+
+                    <!-- Add a section to show some data visualizations or reports -->
+                    <div class="mt-4">
+                        <button class="btn btn-primary">Generate Report</button>
+                        <button class="btn btn-info">View Garden Map</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int personCount = 4;
+    private List<string> cultures = new List<string>();
+    private List<string> selectedCultures = new List<string>();
+    private string searchQuery = "";
+
+    // Property to filter the irrigation types based on the search query
+    private IEnumerable<string> FilteredCultures =>
+        cultures.Where(x => x.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCulturesFromApi();
+    }
+
+    // Method to load cultures from the API
+    private async Task LoadCulturesFromApi()
+    {
+        try
+        {
+            // Replace with your actual API call
+            cultures = await Http.GetFromJsonAsync<List<string>>("https://UltimumBotanica.Api/api/CultureController");
+        }
+        catch (Exception ex)
+        {
+            // Handle any errors from the API call
+            Console.WriteLine($"Error loading cultures: {ex.Message}");
+        }
+    }
+
+    // Event handler for when an culture is selected
+    private void OnCultureSelected(ChangeEventArgs e)
+    {
+        var selectedValue = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(selectedValue) && !selectedCultures.Contains(selectedValue))
+        {
+            selectedCultures.Add(selectedValue);
+        }
+    }
+
+    // Method to remove a selected culture
+    private void RemoveIrrigation(string irrigation)
+    {
+        selectedCultures.Remove(irrigation);
+    }
+}
