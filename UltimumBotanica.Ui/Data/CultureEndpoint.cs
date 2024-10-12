@@ -10,7 +10,7 @@ namespace UltimumBotanica.Ui.Data
         public CultureEndpoint(ApiHelper apiHelper)
         {
             _apiHelper = apiHelper;
-        }
+        } 
 
         public async Task<List<string>> GetAllCultureNames()
         {
@@ -18,7 +18,7 @@ namespace UltimumBotanica.Ui.Data
 
             if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
 
-            var result = await response.Content.ReadFromJsonAsync<List<string>>();
+            var result = await response.Content.ReadAsAsync<List<string>>();
             return result;
         }
     }

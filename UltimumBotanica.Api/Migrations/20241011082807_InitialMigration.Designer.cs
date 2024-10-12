@@ -36,7 +36,7 @@ namespace UltimumBotanica.Api.Migrations
                     b.Property<double>("CompatibilityGrade")
                         .HasColumnType("float");
 
-                    b.Property<int>("NeighbourId")
+                    b.Property<int>("NeighborId")
                         .HasColumnType("int");
 
                     b.Property<int>("SpeciesId")

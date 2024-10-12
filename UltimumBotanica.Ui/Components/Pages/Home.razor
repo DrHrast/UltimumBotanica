@@ -1,4 +1,4 @@
-﻿@inject HttpClient Http
+﻿@using UltimumBotanica.Ui.Data;
 
 @page "/"
 @using UltimumBotanica.Ui.Components;
@@ -50,34 +50,34 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#sidebarAccordion">
                         <div class="accordion-body">
-                            <label for="searchBox">Search Irrigation Type:</label>
+                            <label for="searchBox">Pretraži kulture:</label>
                             <input type="text" id="searchBox" class="form-control mb-2" @bind="searchQuery" placeholder="Type to search..." />
-                            <select class="form-select mb-2" @onchange="OnIrrigationSelected">
-                                <option value="" disabled selected>Select an irrigation type...</option>
-                                @foreach (var irrigation in FilteredCultures)
+                            <select class="form-select mb-2" @onchange="OnCultureSelected">
+                                <option value="" disabled selected>Označi željene kulture</option>
+                                @foreach (var culture in FilteredCultures)
                                 {
-                                    <option value="@irrigation">@irrigation</option>
+                                    <option value="@culture">@culture</option>
                                 }
                             </select>
 
                             <!-- Display Selected Items -->
                             <div class="selected-items">
-                                <h5>Selected Irrigation Types</h5>
+                                <h5>Oznaćene kulture</h5>
                                 @if (selectedCultures.Any())
                                 {
                                     <ul class="list-group">
-                                        @foreach (var irrigation in selectedCultures)
+                                        @foreach (var culture in selectedCultures)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                @irrigation
-                                                <button class="btn btn-danger btn-sm" @onclick="() => RemoveIrrigation(irrigation)">Remove</button>
+                                                @culture
+                                                <button class="btn btn-danger btn-sm" @onclick="() => RemoveCulture(culture)">Ukloni</button>
                                             </li>
                                         }
                                     </ul>
                                 }
                                 else
                                 {
-                                    <p>No irrigation types selected.</p>
+                                    <p>Nije oznaćena niti jedna kultura</p>
                                 }
                             </div>
                         </div>
@@ -115,6 +115,8 @@
 </div>
 
 @code {
+    [Inject] CultureEndpoint ?cultureEndpoint { get; set; }
+
     private int personCount = 4;
     private List<string> cultures = new List<string>();
     private List<string> selectedCultures = new List<string>();
@@ -135,7 +137,7 @@
         try
         {
             // Replace with your actual API call
-            cultures = await Http.GetFromJsonAsync<List<string>>("https://UltimumBotanica.Api/api/CultureController");
+            cultures = await cultureEndpoint!.GetAllCultureNames();
         }
         catch (Exception ex)
         {
@@ -155,8 +157,8 @@
     }
 
     // Method to remove a selected culture
-    private void RemoveIrrigation(string irrigation)
+    private void RemoveCulture(string culture)
     {
-        selectedCultures.Remove(irrigation);
+        selectedCultures.Remove(culture);
     }
 }

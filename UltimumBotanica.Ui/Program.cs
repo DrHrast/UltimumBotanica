@@ -1,4 +1,5 @@
 using UltimumBotanica.Ui.Components;
+using UltimumBotanica.Ui.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddScoped<ApiHelper>();
+builder.Services.AddScoped<CultureEndpoint>();
 
 var app = builder.Build();
 
